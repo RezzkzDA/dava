@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minimalist Portfolio Card</title>
+    
+    <link rel="icon" href="icon.jpg" type="image/jpeg">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Variabel Warna untuk Tema */
@@ -143,7 +146,7 @@
             border-radius: 16px;
             text-align: center;
             width: 90%;
-            max-width: 500px; /* Sedikit dilebarkan agar list pengalaman rapi */
+            max-width: 500px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             border: 1px solid var(--border-color);
             transition: background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
@@ -201,7 +204,7 @@
 
         /* List Pengalaman (Bulleted) */
         .experience-list {
-            list-style: none; /* Menghilangkan bullet bawaan agar bisa di-custom */
+            list-style: none;
             padding: 0;
             margin: 0;
         }
@@ -227,7 +230,7 @@
         }
 
         .experience-list strong {
-            color: var(--text-main); /* Biar judul posisi/perannya lebih menonjol */
+            color: var(--text-main);
         }
 
         /* Menyembunyikan section yang tidak aktif */
@@ -322,7 +325,6 @@
             }
             .waves { height: 10vh; min-height: 80px; }
             
-            /* Layout di HP agar list tidak berantakan */
             .about-content {
                 flex-direction: column;
                 align-items: center;
@@ -330,7 +332,7 @@
             }
 
             .experience-list li {
-                text-align: left; /* Teks list tetap rata kiri walau di tengah */
+                text-align: left;
                 display: inline-block;
                 width: 100%;
             }
@@ -424,21 +426,17 @@
         const secExperience = document.getElementById('sec-experience');
 
         navHome.addEventListener('click', () => {
-            // Ubah class active di navigasi
             navHome.classList.add('active');
             navExperience.classList.remove('active');
             
-            // Tampilkan section Home, sembunyikan Experience
             secHome.classList.add('active');
             secExperience.classList.remove('active');
         });
 
         navExperience.addEventListener('click', () => {
-            // Ubah class active di navigasi
             navExperience.classList.add('active');
             navHome.classList.remove('active');
             
-            // Tampilkan section Experience, sembunyikan Home
             secExperience.classList.add('active');
             secHome.classList.remove('active');
         });
