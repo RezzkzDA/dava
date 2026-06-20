@@ -1,151 +1,447 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dava Tanarja</title>
-  <style>
-    /* Font dan animasi dasar */
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimalist Portfolio Card</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variabel Warna untuk Tema */
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #e0e0e0;
+            --text-muted: #888888;
+            --border-color: #333333;
+            --accent: #555555;
+            
+            --wave-1: rgba(255, 255, 255, 0.02);
+            --wave-2: rgba(255, 255, 255, 0.04);
+            --wave-3: rgba(255, 255, 255, 0.06);
+            --wave-4: rgba(255, 255, 255, 0.09);
+        }
 
-    body {
-      margin: 0;
-      font-family: 'Montserrat', sans-serif;
-      color: white;
-      overflow-x: hidden;
-      animation: fadeIn 2s ease-in;
-      background: url('https://i.imgur.com/g4VC09j.jpeg') no-repeat center center fixed;
-      background-size: cover;
-    }
+        [data-theme="light"] {
+            --bg-color: #e5e5e5;
+            --card-bg: #ffffff;
+            --text-main: #222222;
+            --text-muted: #666666;
+            --border-color: #cccccc;
+            --accent: #aaaaaa;
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+            --wave-1: rgba(0, 0, 0, 0.03);
+            --wave-2: rgba(0, 0, 0, 0.05);
+            --wave-3: rgba(0, 0, 0, 0.07);
+            --wave-4: rgba(0, 0, 0, 0.1);
+        }
 
-    header {
-      text-align: center;
-      padding: 100px 20px 40px;
-      background: rgba(0, 0, 0, 0.5);
-    }
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-    header h1 {
-      font-size: 3em;
-      margin: 0;
-      animation: slideDown 1.5s ease-out;
-    }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            transition: background-color 0.5s ease, color 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
 
-    header p {
-      font-size: 1.2em;
-      margin-top: 10px;
-      animation: fadeIn 2.5s ease-in;
-    }
+        /* Navigasi Top Center */
+        header {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
 
-    @keyframes slideDown {
-      from { transform: translateY(-50px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
+        nav {
+            display: flex;
+            gap: 30px;
+        }
 
-    section {
-      padding: 60px 20px;
-      background: rgba(0, 0, 0, 0.6);
-      margin: 20px;
-      border-radius: 10px;
-      animation: floatUp 2s ease-in-out;
-    }
+        nav a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+            cursor: pointer;
+            padding-bottom: 5px;
+        }
 
-    @keyframes floatUp {
-      from { transform: translateY(30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
+        nav a:hover, nav a.active {
+            color: var(--text-muted);
+            border-bottom: 2px solid var(--text-muted);
+        }
 
-    .card {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 20px;
-      margin: 20px auto;
-      max-width: 600px;
-      border-radius: 10px;
-      backdrop-filter: blur(5px);
-      transition: transform 0.3s ease;
-    }
+        /* Toggle Switch untuk Dark/Light Mode */
+        .theme-switch-wrapper {
+            position: absolute;
+            right: 30px;
+            display: flex;
+            align-items: center;
+        }
 
-    .card:hover {
-      transform: scale(1.05);
-    }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
 
-    footer {
-      text-align: center;
-      padding: 30px;
-      font-size: 0.9em;
-      background: rgba(0, 0, 0, 0.5);
-    }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
 
-    /* Animasi bintang */
-    .stars {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      overflow: hidden;
-    }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #333;
+            transition: .4s;
+            border-radius: 34px;
+        }
 
-    .star {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: white;
-      animation: twinkle 3s infinite ease-in-out;
-    }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border-radius: 50%;
+        }
 
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.2; }
-      50% { opacity: 1; }
-    }
-  </style>
+        input:checked + .slider { background-color: #ccc; }
+        input:checked + .slider:before { transform: translateX(24px); background-color: #222; }
+
+        /* Portfolio Card Style */
+        .card {
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            width: 90%;
+            max-width: 500px; /* Sedikit dilebarkan agar list pengalaman rapi */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            transition: background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+            z-index: 10;
+        }
+
+        /* Styling Foto Profil */
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 20px;
+            background-color: var(--accent);
+            display: block;
+            border: 3px solid var(--border-color);
+        }
+
+        .card h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            transition: color 0.5s ease;
+        }
+
+        /* Layout "My Experience" */
+        .about-content {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .about-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+            background-color: var(--accent);
+            flex-shrink: 0;
+            border: 2px solid var(--border-color);
+        }
+
+        .about-text h2 {
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        /* List Pengalaman (Bulleted) */
+        .experience-list {
+            list-style: none; /* Menghilangkan bullet bawaan agar bisa di-custom */
+            padding: 0;
+            margin: 0;
+        }
+
+        .experience-list li {
+            position: relative;
+            padding-left: 18px;
+            margin-bottom: 12px;
+            font-size: 13.5px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Custom Bullet Point */
+        .experience-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--text-main);
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .experience-list strong {
+            color: var(--text-main); /* Biar judul posisi/perannya lebih menonjol */
+        }
+
+        /* Menyembunyikan section yang tidak aktif */
+        .section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Social Media Icons */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-links a {
+            text-decoration: none;
+            font-size: 20px;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            background-color: transparent;
+        }
+
+        .social-links a.ig { color: #C13584; }
+        .social-links a.yt { color: #FF0000; }
+        .social-links a.fb { color: #1877F2; }
+
+        .social-links a.ig:hover { background-color: #C13584; color: #ffffff; border-color: #C13584; transform: translateY(-3px); }
+        .social-links a.yt:hover { background-color: #FF0000; color: #ffffff; border-color: #FF0000; transform: translateY(-3px); }
+        .social-links a.fb:hover { background-color: #1877F2; color: #ffffff; border-color: #1877F2; transform: translateY(-3px); }
+
+        /* Animasi Wave Bawah */
+        .wave-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            z-index: 1;
+        }
+
+        .waves {
+            position: relative;
+            width: 100%;
+            height: 15vh;
+            min-height: 100px;
+            max-height: 150px;
+        }
+
+        .wave1 { fill: var(--wave-1); }
+        .wave2 { fill: var(--wave-2); }
+        .wave3 { fill: var(--wave-3); }
+        .wave4 { fill: var(--wave-4); }
+
+        .parallax > use { animation: move-forever 25s cubic-bezier(.55,.5,.45,.5) infinite; }
+        .parallax > use:nth-child(1) { animation-delay: -2s; animation-duration: 7s; }
+        .parallax > use:nth-child(2) { animation-delay: -3s; animation-duration: 10s; }
+        .parallax > use:nth-child(3) { animation-delay: -4s; animation-duration: 13s; }
+        .parallax > use:nth-child(4) { animation-delay: -5s; animation-duration: 20s; }
+
+        @keyframes move-forever {
+            0% { transform: translate3d(-90px,0,0); }
+            100% { transform: translate3d(85px,0,0); }
+        }
+
+        /* Responsif untuk Mobile */
+        @media (max-width: 480px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .theme-switch-wrapper {
+                position: relative;
+                right: auto;
+                margin-top: 10px;
+            }
+            .waves { height: 10vh; min-height: 80px; }
+            
+            /* Layout di HP agar list tidak berantakan */
+            .about-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .experience-list li {
+                text-align: left; /* Teks list tetap rata kiri walau di tengah */
+                display: inline-block;
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="stars">
-    <!-- Generate bintang secara acak -->
+
+    <header>
+        <nav>
+            <a id="nav-home" class="active">Home</a>
+            <a id="nav-experience">My Experience</a>
+        </nav>
+        <div class="theme-switch-wrapper">
+            <label class="switch">
+                <input type="checkbox" id="checkbox">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </header>
+
+    <main class="card">
+        
+        <div id="sec-home" class="section active">
+            <img src="foto-profil.jpg" alt="Foto Profil" class="profile-img">
+            <h1>Nama Kamu</h1>
+            <p>Halo! Aku seorang desainer dan developer. Menyukai hal-hal yang simpel, minimalis, dan fungsional.</p>
+            
+            <div class="social-links">
+                <a href="https://www.instagram.com/" class="ig" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com/" class="yt" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.facebook.com/" class="fb" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+            </div>
+        </div>
+
+        <div id="sec-experience" class="section">
+            <div class="about-content">
+                <img src="foto-profil.jpg" alt="Foto Profil" class="about-img">
+                <div class="about-text">
+                    <h2>Pengalamanku</h2>
+                    <ul class="experience-list">
+                        <li><strong>Ketua OSIS (2022 - 2023):</strong> Memimpin berbagai program kerja sekolah, memimpin rapat mingguan, dan mengkoordinasi acara tahunan.</li>
+                        <li><strong>Ketua Panitia Pensi:</strong> Bertanggung jawab mengatur jalannya pentas seni sekolah mulai dari konsep, dana, hingga eksekusi acara.</li>
+                        <li><strong>Anggota Pramuka:</strong> Aktif dalam kegiatan ekstrakurikuler kepramukaan dan pernah mengikuti perkemahan antar sekolah.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <div class="wave-container">
+        <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+            <defs>
+                <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+            </defs>
+            <g class="parallax">
+                <use xlink:href="#gentle-wave" x="48" y="0" class="wave1" />
+                <use xlink:href="#gentle-wave" x="48" y="3" class="wave2" />
+                <use xlink:href="#gentle-wave" x="48" y="5" class="wave3" />
+                <use xlink:href="#gentle-wave" x="48" y="7" class="wave4" />
+            </g>
+        </svg>
+    </div>
+
     <script>
-      for (let i = 0; i < 100; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        star.style.top = Math.random() * 100 + '%';
-        star.style.left = Math.random() * 100 + '%';
-        star.style.animationDuration = (Math.random() * 3 + 2) + 's';
-        document.querySelector('.stars').appendChild(star);
-      }
+        // Logika Switch Dark/Light Mode
+        const toggleSwitch = document.querySelector('#checkbox');
+        const currentTheme = localStorage.getItem('theme');
+
+        if (currentTheme) {
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            if (currentTheme === 'light') toggleSwitch.checked = true;
+        }
+
+        function switchTheme(e) {
+            if (e.target.checked) {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            }    
+        }
+        toggleSwitch.addEventListener('change', switchTheme, false);
+
+        // Logika Navigasi Tab (Home & Experience)
+        const navHome = document.getElementById('nav-home');
+        const navExperience = document.getElementById('nav-experience');
+        const secHome = document.getElementById('sec-home');
+        const secExperience = document.getElementById('sec-experience');
+
+        navHome.addEventListener('click', () => {
+            // Ubah class active di navigasi
+            navHome.classList.add('active');
+            navExperience.classList.remove('active');
+            
+            // Tampilkan section Home, sembunyikan Experience
+            secHome.classList.add('active');
+            secExperience.classList.remove('active');
+        });
+
+        navExperience.addEventListener('click', () => {
+            // Ubah class active di navigasi
+            navExperience.classList.add('active');
+            navHome.classList.remove('active');
+            
+            // Tampilkan section Experience, sembunyikan Home
+            secExperience.classList.add('active');
+            secHome.classList.remove('active');
+        });
     </script>
-  </div>
-
-  <header>
-    <h1>Dava Tanarja</h1>
-    <p>suka suka saya lah</p>
-  </header>
-
-  <section>
-    <div class="card">
-      <h2>Tentang Saya</h2>
-      <p>Hai, perkenalkan aku dava, aku sangat suka sekali mempelajari bahasa asing, saat ini sudah 2 yang aku pelajari, walaupun memang belum fasih tapi setidaknya aku tau dasarnya, apa saja? 1. English 2. Japanese.</p>
-    </div>
-    <div class="card">
-      <h2>Hobi</h2>
-      <ul>
-        <li>Photography 📸</li>
-        <li>Bermain Game 🎮</li>
-        <li>Belajar Bahasa Asing 📚</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h2>Kontak Saya</h2>
-      <p>Email : davatanarja99@gmail.com<br>
-         Instagram : @davatanarja</p>
-      <p>YouTube : DavDava<br>
-    </div>
-  </section>
-
-  <footer>
-    &copy; dav 💫
-  </footer>
 </body>
 </html>
